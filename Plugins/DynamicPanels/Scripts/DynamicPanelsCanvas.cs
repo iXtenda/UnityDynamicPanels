@@ -220,7 +220,7 @@ namespace DynamicPanels
 		public float PanelAnchorZoneLengthRatio { get { return m_panelAnchorZoneLengthRatio; } }
 
 		[SerializeField]
-		private List<PanelProperties> initialPanelsUnanchored;
+		public List<PanelProperties> initialPanelsUnanchored;
 
 		[SerializeField]
 		private Panel m_panelOverride;
@@ -229,7 +229,7 @@ namespace DynamicPanels
 
 		[SerializeField]
 		[HideInInspector]
-		private List<SerializableAnchoredPanelProperties> initialPanelsAnchoredSerialized;
+		public List<SerializableAnchoredPanelProperties> initialPanelsAnchoredSerialized;
 		private AnchoredPanelProperties initialPanelsAnchored;
 #pragma warning restore 0649
 
