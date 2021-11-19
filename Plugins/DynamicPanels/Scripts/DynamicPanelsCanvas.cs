@@ -223,6 +223,11 @@ namespace DynamicPanels
 		private List<PanelProperties> initialPanelsUnanchored;
 
 		[SerializeField]
+		private Panel m_panelOverride;
+
+		public Panel PanelOverride => m_panelOverride;
+
+		[SerializeField]
 		[HideInInspector]
 		private List<SerializableAnchoredPanelProperties> initialPanelsAnchoredSerialized;
 		private AnchoredPanelProperties initialPanelsAnchored;
@@ -452,7 +457,7 @@ namespace DynamicPanels
 					PanelTab tab;
 					if( panel == null )
 					{
-						panel = PanelUtils.CreatePanelFor( panelProps.content, this );
+						panel = PanelUtils.CreatePanelFor( panelProps.content, this, m_panelOverride );
 						tab = panel[0];
 					}
 					else
@@ -480,7 +485,7 @@ namespace DynamicPanels
 
 		private void InitializeRootGroup()
 		{
-			dummyPanel = PanelUtils.Internal.CreatePanel( null, this );
+			dummyPanel = PanelUtils.Internal.CreatePanel( null, this, m_panelOverride );
 			dummyPanel.gameObject.name = "DummyPanel";
 			dummyPanel.CanvasGroup.alpha = 0f;
 			dummyPanel.Internal.SetDummy( minimumFreeSpace );

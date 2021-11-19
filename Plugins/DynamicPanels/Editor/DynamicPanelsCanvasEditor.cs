@@ -34,6 +34,7 @@ namespace DynamicPanels
 		private SerializedProperty panelResizableAreaLength;
 		private SerializedProperty canvasAnchorZoneLength;
 		private SerializedProperty panelAnchorZoneLength;
+		private SerializedProperty panelOverride;
 
 		private void OnEnable()
 		{
@@ -50,6 +51,7 @@ namespace DynamicPanels
 			panelResizableAreaLength = serializedObject.FindProperty( "m_panelResizableAreaLength" );
 			canvasAnchorZoneLength = serializedObject.FindProperty( "m_canvasAnchorZoneLength" );
 			panelAnchorZoneLength = serializedObject.FindProperty( "m_panelAnchorZoneLength" );
+			panelOverride = serializedObject.FindProperty( "m_panelOverride" );
 
 			showIDs = EditorPrefs.GetBool( SHOW_IDS_PREF, false );
 
@@ -112,6 +114,7 @@ namespace DynamicPanels
 			EditorGUILayout.PropertyField( panelResizableAreaLength );
 			EditorGUILayout.PropertyField( canvasAnchorZoneLength );
 			EditorGUILayout.PropertyField( panelAnchorZoneLength );
+			EditorGUILayout.PropertyField( panelOverride );
 
 			GUILayout.Space( 10f );
 

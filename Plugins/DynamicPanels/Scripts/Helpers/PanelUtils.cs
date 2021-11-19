@@ -6,7 +6,7 @@ namespace DynamicPanels
 	{
 		internal static class Internal
 		{
-			public static Panel CreatePanel( RectTransform content, DynamicPanelsCanvas canvas )
+			public static Panel CreatePanel( RectTransform content, DynamicPanelsCanvas canvas, Panel prefabOverride = null )
 			{
 				bool canvasWasNull = canvas == null;
 				if( canvasWasNull )
@@ -35,7 +35,11 @@ namespace DynamicPanels
 
 				if( result == null )
 				{
-					result = (Panel) Object.Instantiate( Resources.Load<Panel>( "DynamicPanel" ), canvas.RectTransform, false );
+					Panel prefab
+						= prefabOverride != null
+						? prefabOverride
+						: Resources.Load<Panel>( "DynamicPanel" );
+					result = (Panel) Object.Instantiate( prefab, canvas.RectTransform, false );
 					result.gameObject.name = "DynamicPanel";
 					result.RectTransform.SetAsLastSibling();
 
@@ -57,7 +61,7 @@ namespace DynamicPanels
 			}
 		}
 
-		public static Panel CreatePanelFor( RectTransform content, DynamicPanelsCanvas canvas )
+		public static Panel CreatePanelFor( RectTransform content, DynamicPanelsCanvas canvas, Panel panelOverride )
 		{
 			if( !content )
 			{
@@ -65,7 +69,7 @@ namespace DynamicPanels
 				return null;
 			}
 
-			return Internal.CreatePanel( content, canvas );
+			return Internal.CreatePanel( content, canvas, panelOverride );
 		}
 
 		public static PanelTab GetAssociatedTab( RectTransform content )
