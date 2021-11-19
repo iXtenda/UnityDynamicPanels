@@ -8,6 +8,9 @@ namespace DynamicPanels
 {
 	public static class PanelSerialization
 	{
+		public delegate PanelTab DeserializedTabNotPresentDelegate( string id );
+		public static event DeserializedTabNotPresentDelegate OnDeserializedTabNotPresent;
+
 		#region Helper Classes
 #pragma warning disable 0649
 		[Serializable]
@@ -305,7 +308,11 @@ namespace DynamicPanels
 				{
 					PanelTab tab;
 					if( !PanelNotificationCenter.TryGetTab( tabs[i].id, out tab ) )
-						continue;
+					{
+						tab = OnDeserializedTabNotPresent?.Invoke( tabs[i].id );
+						if( !tab )
+							continue;
+					}
 
 					if( panel == null )
 					{
