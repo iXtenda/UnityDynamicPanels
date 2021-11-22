@@ -155,12 +155,7 @@ namespace DynamicPanels
 				return;
 			}
 
-			SerializedCanvas serializedCanvas;
-			BinaryFormatter formatter = new BinaryFormatter();
-			using( MemoryStream stream = new MemoryStream( data ) )
-			{
-				serializedCanvas = formatter.Deserialize( stream ) as SerializedCanvas;
-			}
+			SerializedCanvas serializedCanvas = DeserializeCanvas( data );
 
 			if( serializedCanvas == null )
 				return;
@@ -221,6 +216,46 @@ namespace DynamicPanels
 			}
 
 			canvas.gameObject.SetActive( serializedCanvas.active );
+		}
+
+		private static SerializedCanvas DeserializeCanvas( byte[] data )
+		{
+			SerializedCanvas serializedCanvas;
+			BinaryFormatter formatter = new BinaryFormatter();
+			using( MemoryStream stream = new MemoryStream( data ) )
+			{
+				serializedCanvas = formatter.Deserialize( stream ) as SerializedCanvas;
+			}
+
+			return serializedCanvas;
+		}
+
+		public static HashSet<string> GetSerializedTabIds(byte[] data )
+		{
+			SerializedCanvas canvas = DeserializeCanvas( data );
+			var ids = new HashSet<string>();
+			GetSerializedTabIds(canvas.rootPanelGroup, ids);
+			GetSerializedTabIds(canvas.unanchoredPanelGroup, ids);
+			return ids;
+		}
+
+		private static void GetSerializedTabIds(SerializedPanelGroup rootPanelGroup, HashSet<string> ids )
+		{
+			ISerializedElement[] children = rootPanelGroup.children;
+			foreach( var child in children )
+			{
+				if (child is SerializedPanel panel)
+				{
+					for( int j = 0; j < panel.tabs.Length; j++ )
+					{
+						ids.Add(panel.tabs[j].id);
+					}
+				}
+				else if (child is SerializedPanelGroup group)
+				{
+					GetSerializedTabIds( group, ids );
+				}
+			}
 		}
 
 		private static ISerializedElement Serialize( IPanelGroupElement element )
