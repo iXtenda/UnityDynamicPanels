@@ -259,6 +259,9 @@ namespace DynamicPanels
 		[SerializeField]
 		private Color m_tabDetachingTextColor;
 		public Color TabDetachingTextColor { get { return m_tabDetachingTextColor; } }
+
+		[SerializeField]
+		private PanelTab m_tabOverride;
 #pragma warning restore 0649
 
 		public Vector2 Position { get { return RectTransform.anchoredPosition; } }
@@ -431,7 +434,11 @@ namespace DynamicPanels
 				PanelTab tab = PanelUtils.GetAssociatedTab( tabContent );
 				if( !tab )
 				{
-					tab = (PanelTab) Instantiate( Resources.Load<PanelTab>( "DynamicPanelTab" ), tabsParent, false );
+					PanelTab prefab
+						= m_tabOverride != null
+						? m_tabOverride
+						: Resources.Load<PanelTab>( "DynamicPanelTab" );
+					tab = (PanelTab) Instantiate( prefab, tabsParent, false );
 					tabs.Insert( tabIndex, tab );
 
 					tabContent.anchorMin = Vector2.zero;
