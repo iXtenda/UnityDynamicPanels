@@ -6,7 +6,7 @@ namespace DynamicPanels
 	{
 		internal static class Internal
 		{
-			public static Panel CreatePanel( RectTransform content, DynamicPanelsCanvas canvas, Panel prefabOverride = null )
+			public static Panel CreatePanel( RectTransform content, DynamicPanelsCanvas canvas, Panel prefabOverride )
 			{
 				bool canvasWasNull = canvas == null;
 				if( canvasWasNull )

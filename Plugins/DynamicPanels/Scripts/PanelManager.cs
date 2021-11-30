@@ -263,7 +263,7 @@ namespace DynamicPanels
 				}
 				else
 				{
-					Panel newPanel = PanelUtils.Internal.CreatePanel( null, panel.Canvas );
+					Panel newPanel = PanelUtils.Internal.CreatePanel( null, panel.Canvas, panel.Canvas.PanelOverride );
 					newPanel.AddTab( panel[tabIndex].Content );
 					newPanel.FloatingSize = panel.FloatingSize;
 
