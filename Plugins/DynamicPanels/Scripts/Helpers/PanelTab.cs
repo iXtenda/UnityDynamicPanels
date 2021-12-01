@@ -182,11 +182,21 @@ namespace DynamicPanels
 				{
 					background.color = m_panel.TabSelectedColor;
 					nameHolder.color = m_panel.TabSelectedTextColor;
+					iconHolder.color = m_panel.TabSelectedTextColor;
+
+					ColorBlock buttonColors = closeButton.colors;
+					buttonColors.normalColor = m_panel.TabSelectedTextColor;
+					closeButton.colors = buttonColors;
 				}
 				else
 				{
 					background.color = m_panel.TabNormalColor;
 					nameHolder.color = m_panel.TabNormalTextColor;
+					iconHolder.color = m_panel.TabNormalTextColor;
+
+					ColorBlock buttonColors = closeButton.colors;
+					buttonColors.normalColor = m_panel.TabNormalTextColor;
+					closeButton.colors = buttonColors;
 				}
 
 				Content.gameObject.SetActive( activeState );
