@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="clip-Panel_Backgound">
+      <rect width="64" height="64"/>
+    </clipPath>
+  </defs>
+  <g id="Panel_Backgound" data-name="Panel Backgound" clip-path="url(#clip-Panel_Backgound)">
+    <rect id="Rectangle_96" data-name="Rectangle 96" width="64" height="64" rx="1" fill="#fff"/>
+  </g>
+</svg>
