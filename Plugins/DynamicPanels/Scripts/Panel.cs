@@ -96,7 +96,10 @@ namespace DynamicPanels
 			public int GetTabIndexAt( PointerEventData pointer, out Vector2 tabPreviewRect ) // x: position, y: size
 			{
 				int tabCount = panel.tabs.Count;
-				float offset = panel.tabsParent.anchoredPosition.x;
+				// To get the exact position of the tab, we need to take the
+				// parents RectTransform anchored position and the layout groups
+				// spacing into account
+				float offset = panel.tabsParent.anchoredPosition.x + panel.headerRectTransform.anchoredPosition.x + panel.tabsParentLayoutGroup.spacing;
 				if( tabCount == 0 )
 				{
 					tabPreviewRect = new Vector2( offset, panel.Size.x );
@@ -213,6 +216,12 @@ namespace DynamicPanels
 #pragma warning disable 0649
 		[SerializeField]
 		private PanelHeader header;
+
+		[SerializeField]
+		private RectTransform headerRectTransform;
+
+		[SerializeField]
+		private HorizontalLayoutGroup tabsParentLayoutGroup;
 
 		[SerializeField]
 		private RectTransform tabsParent;
