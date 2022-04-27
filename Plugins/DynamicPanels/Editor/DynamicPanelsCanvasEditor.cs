@@ -502,7 +502,7 @@ namespace DynamicPanels
 		private bool DrawReorderableListFor( DynamicPanelsCanvas.PanelProperties panelProperties )
 		{
 			isReorderableListSelected = false;
-			float elementHeight = ( showIDs ? 4 : 3 ) * EditorGUIUtility.singleLineHeight + 2;
+			float elementHeight = ( showIDs ? 5 : 4 ) * EditorGUIUtility.singleLineHeight + 2;
 
 			List<DynamicPanelsCanvas.PanelTabProperties> tabs = panelProperties.tabs;
 			if( reorderableLists.Count > reorderableListIndex )
@@ -554,6 +554,7 @@ namespace DynamicPanels
 			float lineHeight = EditorGUIUtility.singleLineHeight;
 			float contentWidth = rect.width - LABEL_WIDTH;
 			Vector2 tabMinimumSize = tab.minimumSize;
+			bool canBeClosed = tab.canBeClosed;
 
 			Rect contentLabelRect = new Rect( rect.x, rect.y, LABEL_WIDTH, lineHeight );
 			Rect contentRect = new Rect( rect.x + LABEL_WIDTH, rect.y, contentWidth, lineHeight );
@@ -566,8 +567,11 @@ namespace DynamicPanels
 			Rect minSizeXRect = new Rect( rect.x + LABEL_WIDTH, rect.y + 2 * lineHeight, contentWidth * 0.5f, lineHeight );
 			Rect minSizeYRect = new Rect( rect.x + LABEL_WIDTH + contentWidth * 0.5f, rect.y + 2 * lineHeight, contentWidth * 0.5f, lineHeight );
 
-			Rect idLabelRect = new Rect( rect.x, rect.y + 3 * lineHeight, LABEL_WIDTH, lineHeight );
-			Rect idRect = new Rect( rect.x + LABEL_WIDTH, rect.y + 3 * lineHeight, contentWidth, lineHeight );
+			Rect canBeClosedLabelRect = new Rect( rect.x, rect.y + 3 * lineHeight, LABEL_WIDTH, lineHeight );
+			Rect canBeClosedRect = new Rect( rect.x + LABEL_WIDTH, rect.y + 3 * lineHeight, contentWidth, lineHeight );
+
+			Rect idLabelRect = new Rect( rect.x, rect.y + 4 * lineHeight, LABEL_WIDTH, lineHeight );
+			Rect idRect = new Rect( rect.x + LABEL_WIDTH, rect.y + 4 * lineHeight, contentWidth, lineHeight );
 
 			GUI.Label( contentLabelRect, "Content:" );
 			EditorGUI.BeginChangeCheck();
@@ -603,6 +607,15 @@ namespace DynamicPanels
 			{
 				Undo.RecordObject( (DynamicPanelsCanvas) target, "Change Minimum Size" );
 				tab.minimumSize = tabMinimumSize;
+			}
+
+			GUI.Label( canBeClosedLabelRect, "Can be closed:" );
+			EditorGUI.BeginChangeCheck();
+			canBeClosed = EditorGUI.Toggle( canBeClosedRect, GUIContent.none, tab.canBeClosed );
+			if( EditorGUI.EndChangeCheck() )
+			{
+				Undo.RecordObject( (DynamicPanelsCanvas) target, "Change Can Be Closed" );
+				tab.canBeClosed = canBeClosed;
 			}
 
 			if( showIDs )

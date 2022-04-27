@@ -122,6 +122,7 @@ namespace DynamicPanels
 
 			public string tabLabel = "Panel";
 			public Sprite tabIcon = null;
+			public bool canBeClosed = true;
 
 			void ISerializationCallbackReceiver.OnBeforeSerialize()
 			{
@@ -466,6 +467,7 @@ namespace DynamicPanels
 					tab.Icon = panelProps.tabIcon;
 					tab.Label = panelProps.tabLabel;
 					tab.MinSize = panelProps.minimumSize;
+					tab.CanBeClosed = panelProps.canBeClosed;
 					tab.ID = panelProps.id;
 
 					createdTabs.Add( panelProps.content );

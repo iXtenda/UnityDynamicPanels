@@ -106,6 +106,20 @@ namespace DynamicPanels
 			}
 		}
 
+		private bool m_canBeClosed = true;
+		public bool CanBeClosed
+		{
+			get { return m_canBeClosed; }
+			set
+			{
+				if( m_canBeClosed != value )
+				{
+					m_canBeClosed = value;
+					Internal.ChangeCloseButtonVisibility( value );
+				}
+			}
+		}
+
 		public Sprite Icon
 		{
 			get { return iconHolder != null ? iconHolder.sprite : null; }

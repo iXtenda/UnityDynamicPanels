@@ -84,7 +84,7 @@ namespace DynamicPanels
 			{
 				if( !idToTab.ContainsValue( tab ) )
 				{
-					tab.Internal.ChangeCloseButtonVisibility( m_onTabClosed != null );
+					tab.Internal.ChangeCloseButtonVisibility( m_onTabClosed != null && tab.CanBeClosed );
 
 					if( OnTabCreated != null )
 						OnTabCreated( tab );
@@ -168,7 +168,7 @@ namespace DynamicPanels
 					if( m_onTabClosed == null )
 					{
 						foreach( PanelTab tab in idToTab.Values )
-							tab.Internal.ChangeCloseButtonVisibility( true );
+							tab.Internal.ChangeCloseButtonVisibility( tab.CanBeClosed );
 					}
 
 					m_onTabClosed += value;
