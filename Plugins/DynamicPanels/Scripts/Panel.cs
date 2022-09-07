@@ -118,7 +118,7 @@ namespace DynamicPanels
 						if( i > 0 )
 							i--;
 
-						tabPreviewRect = new Vector2( offset + tabPosition, panel.tabs[i].Internal.RectTransform.sizeDelta.x + 4f );
+						tabPreviewRect = new Vector2( offset + tabPosition, panel.tabs[i].Internal.RectTransform.sizeDelta.x );
 						return i;
 					}
 
@@ -139,7 +139,7 @@ namespace DynamicPanels
 					return tabCount;
 				}
 
-				tabPreviewRect = new Vector2( offset + tabPosition, tabSize + 4f );
+				tabPreviewRect = new Vector2( offset + tabPosition, tabSize );
 				return tabCount - 1;
 			}
 
@@ -199,10 +199,18 @@ namespace DynamicPanels
 					panel.resizeZones[i].Stop();
 			}
 
+			public void OnApplicationQuit()
+			{
+#if UNITY_2018_1_OR_NEWER
+				panel.OnApplicationQuitting();
+#else
+				panel.OnApplicationQuit();
+#endif
+			}
+
 			public void AnchorZonesSetActive( bool value ) { panel.AnchorZonesSetActive( value ); }
 			public void OnResize( Direction direction, Vector2 screenPoint ) { panel.OnResize( direction, screenPoint ); }
 			public void OnTranslate( Vector2 deltaPosition ) { panel.OnTranslate( deltaPosition ); }
-			public void OnApplicationQuit() { panel.OnApplicationQuit(); }
 		}
 
 		public RectTransform RectTransform { get; private set; }
@@ -378,6 +386,13 @@ namespace DynamicPanels
 
 			closeButton.onClick.AddListener( () => PanelNotificationCenter.Internal.PanelClosed( this ) );
 			closeButton.transform.SetAsLastSibling();
+
+#if UNITY_2018_1_OR_NEWER
+			// OnApplicationQuit isn't reliable on some Unity versions when Application.wantsToQuit is used; Application.quitting is the only reliable solution on those versions
+			// https://issuetracker.unity3d.com/issues/onapplicationquit-method-is-called-before-application-dot-wantstoquit-event-is-raised
+			Application.quitting -= OnApplicationQuitting;
+			Application.quitting += OnApplicationQuitting;
+#endif
 		}
 
 		private void Start()
@@ -410,6 +425,10 @@ namespace DynamicPanels
 
 		private void OnDestroy()
 		{
+#if UNITY_2018_1_OR_NEWER
+			Application.quitting -= OnApplicationQuitting;
+#endif
+
 			if( !isQuitting )
 			{
 				PanelManager.Instance.UnregisterPanel( this );
@@ -419,7 +438,11 @@ namespace DynamicPanels
 			}
 		}
 
+#if UNITY_2018_1_OR_NEWER
+		private void OnApplicationQuitting()
+#else
 		private void OnApplicationQuit()
+#endif
 		{
 			isQuitting = true;
 		}
